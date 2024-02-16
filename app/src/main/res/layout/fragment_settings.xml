@@ -195,7 +195,6 @@
             android:layout_marginTop="16dp"
             android:text="@string/opening_time"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/guideline"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@id/tvSchedule" />
 
@@ -227,7 +226,6 @@
             android:layout_marginTop="20dp"
             android:text="@string/closing_time"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/guideline"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@id/tvOpeningTime"
             app:layout_goneMarginTop="16sp" />
@@ -280,30 +278,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/guidelineCenter"
             app:layout_constraintTop_toBottomOf="@id/tvNumWorkers" />
-
-        <TextView
-            android:id="@+id/tvServices"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/services"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/npNumWorkers" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnSetServices"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvServices"
-            android:text="@string/set_services"
-            android:backgroundTint="@color/accent"
-            android:textColor="@color/black"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

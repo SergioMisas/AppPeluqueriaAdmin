@@ -1,23 +1,21 @@
 package dev.kuromiichi.apppeluqueriaadmin.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import dev.kuromiichi.apppeluqueriaadmin.R
-import dev.kuromiichi.apppeluqueriaadmin.databinding.FragmentHomeBinding
+import androidx.fragment.app.Fragment
+import dev.kuromiichi.apppeluqueriaadmin.databinding.FragmentUsersBinding
 
-class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
+class UsersFragment : Fragment() {
+    private var _binding: FragmentUsersBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentUsersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -28,13 +26,5 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setButtons()
-    }
-
-    private fun setButtons() {
-        binding.fabSettings.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
-        }
     }
 }

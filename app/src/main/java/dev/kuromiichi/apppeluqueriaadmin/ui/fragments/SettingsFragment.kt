@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.firestore
@@ -59,11 +60,22 @@ class SettingsFragment : Fragment() {
                     "opening_time" to binding.etOpeningTime.text.toString(),
                     "closing_time" to binding.etClosingTime.text.toString()
                 )
-            )
-        }
-
-        binding.btnSetServices.setOnClickListener {
-            findNavController().navigate(R.id.servicesFragment)
+            ).addOnSuccessListener {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.settings_save_success),
+                    Toast.LENGTH_SHORT
+                ).show()
+                val navController = findNavController()
+                navController.popBackStack(R.id.homeFragment, false)
+                navController.navigate(R.id.action_settingsFragment_to_homeFragment)
+            }.addOnFailureListener {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.settings_save_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

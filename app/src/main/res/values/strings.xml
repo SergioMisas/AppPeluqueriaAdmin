@@ -17,4 +17,8 @@
     <string name="number">Número</string>
     <string name="set_services">Ajustar servicios</string>
     <string name="services">Servicios ofrecidos</string>
+    <string name="appointments">Citas</string>
+    <string name="users">Usuarios</string>
+    <string name="settings_save_error">Error al guardar la configuración</string>
+    <string name="settings_save_success">Configuración guardada</string>
 </resources>
