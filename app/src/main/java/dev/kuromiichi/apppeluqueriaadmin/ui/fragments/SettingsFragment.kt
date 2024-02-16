@@ -42,6 +42,7 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setButtons()
+        setNumberPicker()
     }
 
     private fun setButtons() {
@@ -58,7 +59,8 @@ class SettingsFragment : Fragment() {
                 hashMapOf(
                     "open_days" to getOpenDays(),
                     "opening_time" to binding.etOpeningTime.text.toString(),
-                    "closing_time" to binding.etClosingTime.text.toString()
+                    "closing_time" to binding.etClosingTime.text.toString(),
+                    "max_appointments" to binding.npNumWorkers.value
                 )
             ).addOnSuccessListener {
                 Toast.makeText(
@@ -77,6 +79,10 @@ class SettingsFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    private fun setNumberPicker() {
+        binding.npNumWorkers.minValue = 1
     }
 
     private fun getOpenDays(): BooleanArray {
