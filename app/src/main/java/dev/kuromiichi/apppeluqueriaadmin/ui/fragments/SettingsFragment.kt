@@ -87,13 +87,13 @@ class SettingsFragment : Fragment() {
 
     private fun getOpenDays(): BooleanArray {
         val openDays = BooleanArray(7)
-        openDays[0] = binding.checkboxMonday.isChecked
-        openDays[1] = binding.checkboxTuesday.isChecked
-        openDays[2] = binding.checkboxWednesday.isChecked
-        openDays[3] = binding.checkboxThursday.isChecked
-        openDays[4] = binding.checkboxFriday.isChecked
-        openDays[5] = binding.checkboxSaturday.isChecked
-        openDays[6] = binding.checkboxSunday.isChecked
+        openDays[0] = binding.checkboxSunday.isChecked
+        openDays[1] = binding.checkboxMonday.isChecked
+        openDays[2] = binding.checkboxTuesday.isChecked
+        openDays[3] = binding.checkboxWednesday.isChecked
+        openDays[4] = binding.checkboxThursday.isChecked
+        openDays[5] = binding.checkboxFriday.isChecked
+        openDays[6] = binding.checkboxSaturday.isChecked
 
         return openDays
     }
