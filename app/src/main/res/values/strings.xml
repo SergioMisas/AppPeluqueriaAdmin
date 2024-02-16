@@ -2,4 +2,19 @@
     <string name="app_name">AppPeluqueriaAdmin</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="available_days">Días disponibles</string>
+    <string name="letter_monday">L</string>
+    <string name="letter_tuesday">M</string>
+    <string name="letter_wednesday">X</string>
+    <string name="letter_thursday">J</string>
+    <string name="letter_friday">V</string>
+    <string name="letter_saturday">S</string>
+    <string name="letter_sunday">D</string>
+    <string name="opening_time">Hora de apertura</string>
+    <string name="schedule">Horario</string>
+    <string name="closing_time">Hora de cierre</string>
+    <string name="num_workers">Número de peluqueros</string>
+    <string name="number">Número</string>
+    <string name="set_services">Ajustar servicios</string>
+    <string name="services">Servicios ofrecidos</string>
 </resources>
