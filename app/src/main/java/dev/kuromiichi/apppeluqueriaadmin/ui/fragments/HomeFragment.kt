@@ -18,6 +18,7 @@ import dev.kuromiichi.apppeluqueriaadmin.adapters.RecyclerAppointmentAdapter
 import dev.kuromiichi.apppeluqueriaadmin.databinding.FragmentHomeBinding
 import dev.kuromiichi.apppeluqueriaadmin.listeners.AppointmentOnClickListener
 import dev.kuromiichi.apppeluqueriaadmin.models.Appointment
+import dev.kuromiichi.apppeluqueriaadmin.models.User
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Calendar.MONDAY
@@ -112,7 +113,14 @@ class HomeFragment : Fragment(), AppointmentOnClickListener {
     }
 
     override fun onAppointmentClick(appointment: Appointment) {
-        TODO("Not yet implemented")
+        val navController = findNavController()
+        var user: User?
+        db.collection("users").whereEqualTo("uid", appointment.userUid).get()
+            .addOnSuccessListener {
+                user = it.toObjects(User::class.java).first()
+                val action = HomeFragmentDirections.actionHomeFragmentToUsersFragment(user!!)
+                navController.navigate(action)
+            }
     }
 
     private fun setButtons() {

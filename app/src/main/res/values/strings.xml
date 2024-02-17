@@ -2,6 +2,8 @@
     <string name="app_name">AppPeluqueriaAdmin</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Settings -->
     <string name="available_days">Días disponibles</string>
     <string name="letter_monday">L</string>
     <string name="letter_tuesday">M</string>
@@ -17,8 +19,13 @@
     <string name="number">Número</string>
     <string name="set_services">Ajustar servicios</string>
     <string name="services">Servicios ofrecidos</string>
+    <string name="settings_save_error">Error al guardar la configuración</string>
+    <string name="settings_save_success">Configuración guardada</string>
+    <string name="settings_missing_fields">Todos los campos son obligatorios</string>
+    <string name="users">Usuarios</string>
 
     <!-- Appointment -->
+    <string name="appointments">Citas</string>
     <string name="appointment_datetime">Fecha y hora</string>
     <string name="appointment_duration">Duración</string>
     <string name="appointment_services">Servicios</string>
@@ -34,5 +41,5 @@
     <string name="settings_save_success">Configuración guardada</string>
     <string name="settings_missing_fields">Todos los campos son obligatorios</string>
     <string name="choose_date">Elige una fecha</string>
-    <string name="invalid_date">Las fechas introducidas no son válidas</string>
+
 </resources>

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -27,7 +30,10 @@
         android:id="@+id/usersFragment"
         android:name="dev.kuromiichi.apppeluqueriaadmin.ui.fragments.UsersFragment"
         android:label="fragment_users"
-        tools:layout="@layout/fragment_users" />
+        tools:layout="@layout/fragment_users" >
+        <argument android:name="user"
+            app:argType="dev.kuromiichi.apppeluqueriaadmin.models.User" />
+    </fragment>
     <fragment
         android:id="@+id/servicesFragment"
         android:name="dev.kuromiichi.apppeluqueriaadmin.ui.fragments.ServicesFragment"
