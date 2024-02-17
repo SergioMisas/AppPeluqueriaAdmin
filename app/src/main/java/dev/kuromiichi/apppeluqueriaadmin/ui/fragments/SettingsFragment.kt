@@ -1,6 +1,5 @@
 package dev.kuromiichi.apppeluqueriaadmin.ui.fragments
 
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +8,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.kuromiichi.apppeluqueriaadmin.R
 import dev.kuromiichi.apppeluqueriaadmin.databinding.FragmentSettingsBinding
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Calendar.HOUR_OF_DAY
-import java.util.Calendar.MINUTE
-import java.util.Locale
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -55,6 +51,14 @@ class SettingsFragment : Fragment() {
         }
 
         binding.fabConfirmSettings.setOnClickListener {
+            if (binding.etOpeningTime.text.isEmpty() || binding.etClosingTime.text.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.settings_missing_fields),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             db.collection("settings").document("settings").set(
                 hashMapOf(
                     "open_days" to getOpenDays(),
@@ -99,22 +103,13 @@ class SettingsFragment : Fragment() {
     }
 
     private fun timePickerDialog(editText: EditText) {
-        val calendar = Calendar.getInstance()
-        TimePickerDialog(
-            requireContext(),
-            { _, hour, minute ->
-                calendar[HOUR_OF_DAY] = hour
-                calendar[MINUTE] = minute
-                editText.setText(
-                    SimpleDateFormat(
-                        "HH:mm",
-                        Locale.getDefault()
-                    ).format(calendar.time)
-                )
-            },
-            calendar[HOUR_OF_DAY],
-            calendar[MINUTE],
-            true
-        ).show()
+        val dialog = MaterialTimePicker.Builder()
+            .setTitleText("Escoge una hora")
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .build()
+
+        dialog.addOnPositiveButtonClickListener {
+            editText.setText(dialog.hour.toString() + ":" + dialog.minute.toString())
+        }
     }
 }
