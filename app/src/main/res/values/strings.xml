@@ -17,6 +17,17 @@
     <string name="number">Número</string>
     <string name="set_services">Ajustar servicios</string>
     <string name="services">Servicios ofrecidos</string>
+
+    <!-- Appointment -->
+    <string name="appointment_datetime">Fecha y hora</string>
+    <string name="appointment_duration">Duración</string>
+    <string name="appointment_services">Servicios</string>
+    <string name="appointment_user">Usuario</string>
+
+    <!-- Services -->
+    <string name="service_name">Nombre</string>
+    <string name="service_time">Duración</string>
+
     <string name="appointments">Citas</string>
     <string name="users">Usuarios</string>
     <string name="settings_save_error">Error al guardar la configuración</string>
