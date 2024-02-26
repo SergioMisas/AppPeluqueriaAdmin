@@ -20,7 +20,6 @@ import dev.kuromiichi.apppeluqueriaadmin.listeners.AppointmentOnClickListener
 import dev.kuromiichi.apppeluqueriaadmin.models.Appointment
 import dev.kuromiichi.apppeluqueriaadmin.models.User
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Calendar.MONDAY
 import java.util.Date
 import java.util.Locale
@@ -63,12 +62,7 @@ class HomeFragment : Fragment(), AppointmentOnClickListener {
             adapter = this@HomeFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
         }
-        db.collection("appointments")
-            .get()
-            .addOnSuccessListener { result ->
-                appointments = result.toObjects(Appointment::class.java)
-                updateRecycler()
-            }
+        updateRecycler()
     }
 
     private fun updateRecycler() {
@@ -76,41 +70,23 @@ class HomeFragment : Fragment(), AppointmentOnClickListener {
             .get()
             .addOnSuccessListener { result ->
                 appointments = result.toObjects(Appointment::class.java)
+                filterAppointments()
+                adapter.setAppointments(appointments)
             }
-        filterAppointments()
     }
 
     private fun filterAppointments() {
-        when {
+        appointments = when {
             beginDate == null && endDate == null -> {
-                appointments = appointments.filter {
-                    val today = Calendar.getInstance().apply {
-                        timeInMillis = MaterialDatePicker.todayInUtcMilliseconds()
-                    }
-                    val tomorrow = today.clone() as Calendar
-                    tomorrow.add(Calendar.DAY_OF_MONTH, 1)
-
-                    it.date.after(today.time) && it.date.before(tomorrow.time)
-                }
+                appointments.filter { it.date >= Date(MaterialDatePicker.todayInUtcMilliseconds()) }
             }
-
-            beginDate == null && endDate != null -> {
-                appointments = appointments.filter {
-                    it.date.before(endDate)
-                }
-            }
-
             beginDate != null && endDate == null -> {
-                appointments = appointments.filter {
-                    it.date.after(beginDate)
-                }
+                appointments.filter { it.date >= beginDate }
             }
-
-            else -> {
-                appointments = appointments.filter {
-                    it.date.after(beginDate) && it.date.before(endDate)
-                }
+            beginDate == null && endDate != null -> {
+                appointments.filter { it.date <= endDate }
             }
+            else -> appointments.filter { it.date >= beginDate && it.date <= endDate }
         }
     }
 
@@ -174,7 +150,10 @@ class HomeFragment : Fragment(), AppointmentOnClickListener {
                 Toast.LENGTH_SHORT
             ).show()
             resetFilters()
+            return
         }
+
+        updateRecycler()
     }
 
     private fun resetFilters() {
@@ -182,5 +161,7 @@ class HomeFragment : Fragment(), AppointmentOnClickListener {
         endDate = null
         binding.etDateFrom.setText("")
         binding.etDateTo.setText("")
+
+        updateRecycler()
     }
 }
