@@ -14,6 +14,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.kuromiichi.apppeluqueriaadmin.R
 import dev.kuromiichi.apppeluqueriaadmin.databinding.FragmentSettingsBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Calendar.HOUR_OF_DAY
+import java.util.Calendar.MINUTE
+import java.util.Locale
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -21,9 +26,10 @@ class SettingsFragment : Fragment() {
 
     private val db by lazy { Firebase.firestore }
 
+    private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,6 +45,7 @@ class SettingsFragment : Fragment() {
 
         setButtons()
         setNumberPicker()
+        getSettings()
     }
 
     private fun setButtons() {
@@ -68,28 +75,26 @@ class SettingsFragment : Fragment() {
                 )
             ).addOnSuccessListener {
                 Toast.makeText(
-                    requireContext(),
-                    getString(R.string.settings_save_success),
-                    Toast.LENGTH_SHORT
+                    requireContext(), getString(R.string.settings_save_success), Toast.LENGTH_SHORT
                 ).show()
-                val navController = findNavController()
-                navController.popBackStack(R.id.homeFragment, false)
-                navController.navigate(R.id.action_settingsFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_settingsFragment_to_homeFragment)
             }.addOnFailureListener {
                 Toast.makeText(
-                    requireContext(),
-                    getString(R.string.settings_save_error),
-                    Toast.LENGTH_SHORT
+                    requireContext(), getString(R.string.settings_save_error), Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
 
     private fun setNumberPicker() {
-        binding.npNumWorkers.minValue = 1
+        binding.npNumWorkers.apply {
+            minValue = 1
+            maxValue = 100
+            wrapSelectorWheel = false
+        }
     }
 
-    private fun getOpenDays(): BooleanArray {
+    private fun getOpenDays(): List<Boolean> {
         val openDays = BooleanArray(7)
         openDays[0] = binding.checkboxSunday.isChecked
         openDays[1] = binding.checkboxMonday.isChecked
@@ -99,17 +104,40 @@ class SettingsFragment : Fragment() {
         openDays[5] = binding.checkboxFriday.isChecked
         openDays[6] = binding.checkboxSaturday.isChecked
 
-        return openDays
+        return openDays.toList()
     }
 
     private fun timePickerDialog(editText: EditText) {
-        val dialog = MaterialTimePicker.Builder()
-            .setTitleText("Escoge una hora")
-            .setTimeFormat(TimeFormat.CLOCK_12H)
-            .build()
+        val dialog = MaterialTimePicker.Builder().setTitleText("Escoge una hora")
+            .setTimeFormat(TimeFormat.CLOCK_12H).build()
 
         dialog.addOnPositiveButtonClickListener {
-            editText.setText(dialog.hour.toString() + ":" + dialog.minute.toString())
+            val calendar = Calendar.getInstance().apply {
+                set(HOUR_OF_DAY, dialog.hour)
+                set(MINUTE, dialog.minute)
+            }
+            editText.setText(timeFormat.format(calendar.time))
         }
+
+        dialog.show(childFragmentManager, "TIME_PICKER")
+    }
+
+    private fun getSettings() {
+        db.collection("settings").document("settings").get().addOnSuccessListener {
+            setOpenDays(it["open_days"] as List<Boolean>)
+            binding.etOpeningTime.setText(it["opening_time"].toString())
+            binding.etClosingTime.setText(it["closing_time"].toString())
+            binding.npNumWorkers.value = it["max_appointments"].toString().toInt()
+        }
+    }
+
+    private fun setOpenDays(openDays: List<Boolean>) {
+        binding.checkboxSunday.isChecked = openDays[0]
+        binding.checkboxMonday.isChecked = openDays[1]
+        binding.checkboxTuesday.isChecked = openDays[2]
+        binding.checkboxWednesday.isChecked = openDays[3]
+        binding.checkboxThursday.isChecked = openDays[4]
+        binding.checkboxFriday.isChecked = openDays[5]
+        binding.checkboxSaturday.isChecked = openDays[6]
     }
 }
