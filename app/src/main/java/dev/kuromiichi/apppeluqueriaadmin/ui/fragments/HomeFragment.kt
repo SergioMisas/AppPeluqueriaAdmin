@@ -31,10 +31,12 @@ class HomeFragment : Fragment(), AppointmentOnClickListener {
 
     private val db by lazy { Firebase.firestore }
 
-    private lateinit var appointments: List<Appointment>
     private lateinit var adapter: RecyclerAppointmentAdapter
+    private var appointments: List<Appointment> = emptyList()
     private var beginDate: Date? = null
     private var endDate: Date? = null
+
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -153,26 +155,17 @@ class HomeFragment : Fragment(), AppointmentOnClickListener {
 
         dialog.addOnPositiveButtonClickListener {
             if (dialog.selection != null) {
-                editText.setText(
-                    SimpleDateFormat(
-                        "dd/MM/yyyy",
-                        Locale.getDefault()
-                    ).format(dialog.selection)
-                )
+                editText.setText(dateFormat.format(dialog.selection))
                 updateDates()
             }
         }
     }
 
     private fun updateDates() {
-        if (binding.etDateFrom.text.toString().isNotEmpty()) beginDate = SimpleDateFormat(
-            "dd/MM/yyyy",
-            Locale.getDefault()
-        ).parse(binding.etDateFrom.text.toString())
-        if (binding.etDateTo.text.toString().isNotEmpty()) endDate = SimpleDateFormat(
-            "dd/MM/yyyy",
-            Locale.getDefault()
-        ).parse(binding.etDateTo.text.toString())
+        if (binding.etDateFrom.text.toString().isNotEmpty()) beginDate =
+            dateFormat.parse(binding.etDateFrom.text.toString())
+        if (binding.etDateTo.text.toString().isNotEmpty()) endDate =
+            dateFormat.parse(binding.etDateTo.text.toString())
 
         if (beginDate != null && endDate != null && beginDate!! > endDate!!) {
             Toast.makeText(
