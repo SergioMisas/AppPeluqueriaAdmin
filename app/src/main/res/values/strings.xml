@@ -23,6 +23,9 @@
     <string name="settings_save_success">Configuración guardada</string>
     <string name="settings_missing_fields">Todos los campos son obligatorios</string>
     <string name="users">Usuarios</string>
+    <string name="choose_date">Elige una fecha</string>
+    <string name="invalid_date">Las fechas seleccionadas no son válidas</string>
+
 
     <!-- Appointment -->
     <string name="appointments">Citas</string>
@@ -33,9 +36,10 @@
 
     <!-- Services -->
     <string name="service_name">Nombre</string>
-    <string name="service_time">Duración</string>
+    <string name="service_time">Duración (min)</string>
+    <string name="toast_confirm_service_success">Servicio creado correctamente</string>
+    <string name="toast_confirm_service_failed">Error al crear el servicio</string>
 
-    <string name="choose_date">Elige una fecha</string>
-    <string name="invalid_date">Las fechas seleccionadas no son válidas</string>
+
 
 </resources>
