@@ -27,8 +27,7 @@ class ServicesFragment : Fragment(), ServiceOnClickListener {
     private var services = emptyList<Service>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentServicesBinding.inflate(inflater, container, false)
         return binding.root
@@ -66,22 +65,30 @@ class ServicesFragment : Fragment(), ServiceOnClickListener {
             AlertDialog.Builder(requireContext()).apply {
                 val binding = DialogCreateServiceBinding.inflate(layoutInflater)
                 binding.npNumMinutes.apply {
+                    minValue = 1
+                    maxValue = 20
                     wrapSelectorWheel = false
-                    value = 30
                     displayedValues = (30..600 step 30).map { it.toString() }.toTypedArray()
                 }
                 setView(binding.root)
                 setTitle("Crear Servicio")
                 setPositiveButton("Crear") { _, _ ->
+                    if (binding.TilName.editText?.text.toString().isEmpty()) {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.toast_missing_name),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setPositiveButton
+                    }
                     db.collection("services").add(
                         Service(
                             name = binding.TilName.editText?.text.toString(),
-                            duration = binding.npNumMinutes.value
+                            duration = binding.npNumMinutes.value * 30
                         )
-                    )
-                        .addOnSuccessListener { result ->
-                            db.collection("services").document(result.id)
-                                .update("id", result.id).addOnSuccessListener {
+                    ).addOnSuccessListener { result ->
+                            db.collection("services").document(result.id).update("id", result.id)
+                                .addOnSuccessListener {
                                     Toast.makeText(
                                         requireContext(),
                                         getString(R.string.toast_confirm_service_success),
@@ -89,31 +96,24 @@ class ServicesFragment : Fragment(), ServiceOnClickListener {
                                     ).show()
                                 }
                             updateRecycler()
-                        }
-                        .addOnFailureListener {
+                        }.addOnFailureListener {
                             Toast.makeText(
                                 requireContext(),
                                 getString(R.string.toast_confirm_service_failed),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                }
-                    .show()
+                }.show()
             }
         }
     }
 
     override fun onServiceClick(service: Service) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Confirmar borrado")
+        AlertDialog.Builder(requireContext()).setTitle("Confirmar borrado")
             .setMessage("¿Seguro que quieres borrar este servicio?")
             .setPositiveButton("Borrar") { _, _ ->
                 db.collection("services").document(service.id).delete()
                 updateRecycler()
-            }
-            .setNeutralButton("Cancelar", null)
-            .show()
+            }.setNeutralButton("Cancelar", null).show()
     }
-
-
 }
