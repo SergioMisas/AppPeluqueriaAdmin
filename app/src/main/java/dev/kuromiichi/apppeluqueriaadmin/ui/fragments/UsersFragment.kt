@@ -13,6 +13,7 @@ import dev.kuromiichi.apppeluqueriaadmin.adapters.RecyclerAppointmentAdapter
 import dev.kuromiichi.apppeluqueriaadmin.databinding.FragmentUsersBinding
 import dev.kuromiichi.apppeluqueriaadmin.listeners.AppointmentOnClickListener
 import dev.kuromiichi.apppeluqueriaadmin.models.Appointment
+import kotlinx.coroutines.runBlocking
 
 class UsersFragment : Fragment(), AppointmentOnClickListener {
     private var _binding: FragmentUsersBinding? = null
@@ -43,15 +44,18 @@ class UsersFragment : Fragment(), AppointmentOnClickListener {
     }
 
     private fun setRecycler() {
-        db.collection("appointments").whereEqualTo("userUid", args.user.uid).get()
-            .addOnSuccessListener { result ->
-                appointments = result.toObjects(Appointment::class.java)
-            }
-        appointments = appointments.sortedBy { it.date }
         adapter = RecyclerAppointmentAdapter(appointments, this)
         binding.rvUserAppointments.apply {
             adapter = this@UsersFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+        runBlocking {
+            db.collection("appointments").whereEqualTo("userUid", args.user.uid).get()
+                .addOnSuccessListener { result ->
+                    appointments = result.toObjects(Appointment::class.java)
+                    appointments = appointments.sortedBy { it.date }
+                    adapter.setAppointments(appointments)
+                }
         }
     }
 
