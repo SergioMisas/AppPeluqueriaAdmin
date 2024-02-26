@@ -41,26 +41,29 @@
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/accent"
             android:src="@drawable/ic_calendar"
-            app:layout_constraintEnd_toStartOf="@id/guidelineLeft"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/etDateFrom"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintTop_toTopOf="@+id/etDateFrom" />
 
         <EditText
             android:id="@+id/etDateTo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@id/btnDateTo"
-            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etDateFrom" />
 
         <ImageButton
             android:id="@+id/btnDateTo"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
             android:backgroundTint="@color/accent"
             android:src="@drawable/ic_calendar"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/etDateTo"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+            app:layout_constraintTop_toTopOf="@id/etDateTo" />
 
         <ImageButton
             android:id="@+id/btnFilterOff"
@@ -68,8 +71,10 @@
             android:layout_height="48dp"
             android:backgroundTint="@color/red"
             android:src="@drawable/ic_filter_off"
+            app:layout_constraintTop_toTopOf="@id/btnDateFrom"
+            app:layout_constraintBottom_toBottomOf="@id/btnDateTo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@id/guidelineRight" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAppointments"
@@ -77,7 +82,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnDateFrom"
+            app:layout_constraintTop_toBottomOf="@id/btnDateTo"
             tools:layout_editor_absoluteX="16dp" />
 
 
@@ -90,7 +95,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:backgroundTint="@color/accent"
-        app:tint="@color/black"
-        android:src="@drawable/ic_settings" />
+        android:src="@drawable/ic_settings"
+        app:tint="@color/black" />
 
 </FrameLayout>
