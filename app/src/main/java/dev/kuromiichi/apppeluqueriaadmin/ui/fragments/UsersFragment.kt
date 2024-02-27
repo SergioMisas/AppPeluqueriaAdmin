@@ -9,10 +9,14 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import dev.kuromiichi.apppeluqueriaadmin.adapters.RecyclerAppointmentAdapter
 import dev.kuromiichi.apppeluqueriaadmin.databinding.FragmentUsersBinding
 import dev.kuromiichi.apppeluqueriaadmin.listeners.AppointmentOnClickListener
 import dev.kuromiichi.apppeluqueriaadmin.models.Appointment
+import dev.kuromiichi.apppeluqueriaadmin.models.User
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 class UsersFragment : Fragment(), AppointmentOnClickListener {
     private var _binding: FragmentUsersBinding? = null
@@ -22,6 +26,8 @@ class UsersFragment : Fragment(), AppointmentOnClickListener {
     private val args by navArgs<UsersFragmentArgs>()
     private val db by lazy { Firebase.firestore }
     private var appointments: List<Appointment> = emptyList()
+
+    private lateinit var user : User
 
 
     override fun onCreateView(
@@ -39,19 +45,32 @@ class UsersFragment : Fragment(), AppointmentOnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setTexts()
         setRecycler()
     }
 
+    private fun setTexts() {
+        runBlocking {
+            user = db.collection("users").document(args.user.uid).get().await().toObject<User>()!!
+        }
+        binding.tvUserName.text = user.name
+        binding.tvUserEmail.text = user.email
+        binding.tvUserPhone.text = user.phone
+    }
+
     private fun setRecycler() {
-        db.collection("appointments").whereEqualTo("userUid", args.user.uid).get()
-            .addOnSuccessListener { result ->
-                appointments = result.toObjects(Appointment::class.java)
-            }
-        appointments = appointments.sortedBy { it.date }
         adapter = RecyclerAppointmentAdapter(appointments, this)
         binding.rvUserAppointments.apply {
             adapter = this@UsersFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+        runBlocking {
+            db.collection("appointments").whereEqualTo("userUid", args.user.uid).get()
+                .addOnSuccessListener { result ->
+                    appointments = result.toObjects(Appointment::class.java)
+                    appointments = appointments.sortedBy { it.date }
+                    adapter.setAppointments(appointments)
+                }
         }
     }
 

@@ -40,6 +40,8 @@
     <string name="toast_confirm_service_success">Servicio creado correctamente</string>
     <string name="toast_confirm_service_failed">Error al crear el servicio</string>
     <string name="toast_missing_name">El servicio debe tener un nombre</string>
+    <string name="email">Email</string>
+    <string name="phone">Teléfono</string>
 
 
 </resources>
